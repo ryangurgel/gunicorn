@@ -1,91 +1,38 @@
 Gunicorn enxuto
 ===============
 
-Este snapshot mantém apenas o necessário para rodar o servidor WSGI e foca em
-instalação rápida. O código-fonte permanece em ``gunicorn/`` e o comando
-``gunicorn`` continua disponível via entrypoint definido em ``pyproject.toml``.
+Este snapshot mantém apenas o necessário para rodar o servidor WSGI. O código
+fonte permanece em ``gunicorn/`` e o comando ``gunicorn`` continua disponível
+via entrypoint definido em ``pyproject.toml``.
 
-O que ficou (e para que serve)
-------------------------------
+Instalação mínima
+-----------------
 
-* ``gunicorn/``: todo o código de produção do servidor WSGI (workers,
-  configurações, logger, reloader e CLI).
-* ``pyproject.toml``: metadados do pacote, dependências opcionais, entrypoints e
-  configurações do setuptools. Também garante que ``LICENSE`` e ``NOTICE`` vão
-  para a distribuição sem depender de ``MANIFEST.in``.
-* ``LICENSE`` e ``NOTICE``: termos da licença MIT e créditos de terceiros.
-* ``README.rst``: este guia de uso.
+* Python 3.10 ou superior.
+* Dependência direta: ``packaging`` (já declarada no ``pyproject.toml``).
 
-Dependências e variantes
-------------------------
+Instale localmente::
 
-* Requisito mínimo: Python 3.10+ e o pacote ``packaging`` (instalado
-  automaticamente).
-* Extras opcionais para escolher o tipo de worker:
-  * ``gevent`` (``pip install .[gevent]``) — worker assíncrono baseado em greenlets.
-  * ``eventlet`` (``pip install .[eventlet]``) — worker assíncrono alternativo.
-  * ``tornado`` (``pip install .[tornado]``) — integra com o loop do Tornado.
-  * ``setproctitle`` — opcional para personalizar o nome do processo.
+    pip install .
 
-Como rodar (sem instalar)
--------------------------
+Ou execute sem instalar (assumindo o diretório no ``PYTHONPATH``)::
 
-1. Garanta que o diretório do repositório está no ``PYTHONPATH``.
-2. Exporte uma callable WSGI, por exemplo em ``hello.py``::
+    python -m gunicorn MODULE:APP
 
-       def app(environ, start_response):
-           start_response("200 OK", [("Content-Type", "text/plain")])
-           return [b"hello"]
-
-3. Inicie o servidor apontando para ``MODULE:APP``::
-
-       python -m gunicorn hello:app
-
-4. Abra ``http://127.0.0.1:8000`` para ver a resposta.
-
-Como rodar instalado
---------------------
-
-Instale localmente (modo editable opcional)::
-
-    pip install .            # instalação padrão
-    # ou
-    pip install -e .         # desenvolvimento
-
-Depois execute::
-
-    gunicorn módulo:variavel
-
-Use ``--workers``, ``--bind``, ``--worker-class`` e demais flags para ajustar
-concorrência, endereço de escuta e tipo de worker.
-
-Layout do código
-----------------
-
-* ``gunicorn/app/``: inicialização do servidor e CLI (``wsgiapp.py`` é o entrypoint).
-* ``gunicorn/workers/``: implementações de workers síncronos e assíncronos.
-* ``gunicorn/config.py``: opções de configuração e mapeamento de flags.
-* ``gunicorn/http/``: parser/serializer HTTP.
-* ``gunicorn/reloader.py``: autoreload para desenvolvimento.
-* ``gunicorn/__main__.py``: permite ``python -m gunicorn``.
-
-Verificação rápida
-------------------
-
-Confirme a instalação e a versão esperada::
-
-    python -m gunicorn --version
+``MODULE:APP`` segue o padrão ``pacote.modulo:variavel`` onde ``variavel`` é
+uma callable WSGI exportada pelo módulo indicado.
 
 O que foi removido
 ------------------
 
-Para deixar o repositório enxuto e ainda funcional, foram removidos:
+Para deixar o repositório mais enxuto e ainda funcional, removemos:
 
 * ``docs/`` e demais ativos de documentação.
-* Scripts auxiliares de manutenção (``scripts/``) e arquivos de comunidade
-  (``CONTRIBUTING.md``, ``SECURITY.md``, ``THANKS``, ``MAINTAINERS``).
-* Configuração de CI e ferramentas de teste (``appveyor.yml``, ``Makefile``,
-  ``tox.ini``, ``requirements_*.txt``).
+* Scripts auxiliares (``scripts/``) usados para tarefas de manutenção.
+* Arquivos de contribuição, segurança e agradecimentos (``CONTRIBUTING.md``,
+  ``SECURITY.md``, ``THANKS``, ``MAINTAINERS``).
+* Configuração de CI, tox e requisitos de teste/desenvolvimento
+  (``appveyor.yml``, ``Makefile``, ``tox.ini``, ``requirements_*.txt``).
 
 Licença
 -------

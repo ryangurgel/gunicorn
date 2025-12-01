@@ -1,74 +1,41 @@
-Gunicorn
---------
+Gunicorn enxuto
+===============
 
-.. image:: https://img.shields.io/pypi/v/gunicorn.svg?style=flat
-    :alt: PyPI version
-    :target: https://pypi.python.org/pypi/gunicorn
+Este snapshot mantém apenas o necessário para rodar o servidor WSGI. O código
+fonte permanece em ``gunicorn/`` e o comando ``gunicorn`` continua disponível
+via entrypoint definido em ``pyproject.toml``.
 
-.. image:: https://img.shields.io/pypi/pyversions/gunicorn.svg
-    :alt: Supported Python versions
-    :target: https://pypi.python.org/pypi/gunicorn
+Instalação mínima
+-----------------
 
-.. image:: https://github.com/benoitc/gunicorn/actions/workflows/tox.yml/badge.svg
-    :alt: Build Status
-    :target: https://github.com/benoitc/gunicorn/actions/workflows/tox.yml
+* Python 3.10 ou superior.
+* Dependência direta: ``packaging`` (já declarada no ``pyproject.toml``).
 
-.. image:: https://github.com/benoitc/gunicorn/actions/workflows/lint.yml/badge.svg
-    :alt: Lint Status
-    :target: https://github.com/benoitc/gunicorn/actions/workflows/lint.yml
+Instale localmente::
 
-Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX. It's a pre-fork
-worker model ported from Ruby's Unicorn_ project. The Gunicorn server is broadly
-compatible with various web frameworks, simply implemented, light on server
-resource usage, and fairly speedy.
+    pip install .
 
-Feel free to join us in `#gunicorn`_ on `Libera.chat`_.
+Ou execute sem instalar (assumindo o diretório no ``PYTHONPATH``)::
 
-Documentation
--------------
+    python -m gunicorn MODULE:APP
 
-The documentation is hosted at https://docs.gunicorn.org.
+``MODULE:APP`` segue o padrão ``pacote.modulo:variavel`` onde ``variavel`` é
+uma callable WSGI exportada pelo módulo indicado.
 
-Installation
-------------
+O que foi removido
+------------------
 
-Gunicorn requires **Python 3.x >= 3.10**.
+Para deixar o repositório mais enxuto e ainda funcional, removemos:
 
-Install from PyPI::
+* ``docs/`` e demais ativos de documentação.
+* Scripts auxiliares (``scripts/``) usados para tarefas de manutenção.
+* Arquivos de contribuição, segurança e agradecimentos (``CONTRIBUTING.md``,
+  ``SECURITY.md``, ``THANKS``, ``MAINTAINERS``).
+* Configuração de CI, tox e requisitos de teste/desenvolvimento
+  (``appveyor.yml``, ``Makefile``, ``tox.ini``, ``requirements_*.txt``).
 
-    $ pip install gunicorn
-
-
-Usage
------
-
-Basic usage::
-
-    $ gunicorn [OPTIONS] APP_MODULE
-
-Where ``APP_MODULE`` is of the pattern ``$(MODULE_NAME):$(VARIABLE_NAME)``. The
-module name can be a full dotted path. The variable name refers to a WSGI
-callable that should be found in the specified module.
-
-Example with test app::
-
-    $ cd examples
-    $ gunicorn --workers=2 test:app
-
-
-Contributing
-------------
-
-See `our complete contributor's guide <CONTRIBUTING.md>`_ for more details.
-
-
-License
+Licença
 -------
 
-Gunicorn is released under the MIT License. See the LICENSE_ file for more
-details.
-
-.. _Unicorn: https://bogomips.org/unicorn/
-.. _`#gunicorn`: https://web.libera.chat/?channels=#gunicorn
-.. _`Libera.chat`: https://libera.chat/
-.. _LICENSE: https://github.com/benoitc/gunicorn/blob/master/LICENSE
+Gunicorn é distribuído sob a licença MIT. Consulte ``LICENSE`` e ``NOTICE``
+para detalhes adicionais de copyright.
